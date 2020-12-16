@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>todo list</title>
+</head>
+<body>
+<h3>Todo list</h3>
+
+<form action="#" id="todoForm" th:action="@{/create}"  method="post">
+    <label>Today task:</label>
+    <input type="text" id="task" name="task" required/>
+    <button>Add todo</button>
+</form>
+<br>
+
+<div th:if="${todos} != null">
+
+    <table>
+        <thead>Task</thead>&nbsp;&nbsp;&nbsp;<thead>Completed</thead>
+        <tr th:each="todo: ${todos}">
+            <td th:text="${todo.task}"></td>
+            <td>
+                <input type="checkbox" name="active" th:checked="${todo.status}" th:onClick="|window.location.href='/update/+${todo.id}'|"/>
+
+            </td>
+            <td>
+                <!--<div th:if="${todo.status}">-->
+                    <!--<a th:href="@{'/delete/' + ${todo.id}}">Delete</a>-->
+                <!--</div>-->
+
+                <div th:if="${todo.status}">
+                <form action="#" th:action="@{'/delete/{id}'(id=${todo.id})}" th:method="delete" >
+                    <button type="submit"> Delete </button>
+                </form>
+                </div>
+
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div th:unless="${todos}">
+<br>
+    <div>No todo found, Add some todo</div>
+</div>
+
+</body>
+</html>
